@@ -2,8 +2,7 @@ package com.example.formlogin
 
 import android.os.Bundle
 import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.WindowManager // Tambahkan import ini
+import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -16,10 +15,8 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // --- LANGKAH NOMOR 3 (PERBAIKAN) ---
-        // Letakkan ini sebelum setContentView agar layar otomatis terangkat saat keyboard muncul
+        // Agar layout terangkat saat keyboard muncul
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-
         setContentView(R.layout.activity_register)
 
         // 1. Inisialisasi Tombol Back
@@ -34,7 +31,7 @@ class RegisterActivity : AppCompatActivity() {
         val etPassword = findViewById<TextInputEditText>(R.id.etPassword)
         val etConfirm = findViewById<TextInputEditText>(R.id.etConfirmPassword)
 
-        // 3. Inisialisasi Layout Container (untuk error & warna putih)
+        // 3. Inisialisasi Layout Container
         val tilName = findViewById<TextInputLayout>(R.id.tilName)
         val tilEmail = findViewById<TextInputLayout>(R.id.tilEmail)
         val tilPassword = findViewById<TextInputLayout>(R.id.tilPassword)
@@ -54,8 +51,7 @@ class RegisterActivity : AppCompatActivity() {
         // Pola Password: Min 8 Karakter, Huruf Besar, Kecil, Angka, dan Simbol
         val passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*])(?=\\S+$).{8,}$".toRegex()
 
-        // --- LOGIKA REAL-TIME (Menghilangkan Error saat Mengetik) ---
-
+        // --- LOGIKA REAL-TIME ---
         etName.addTextChangedListener {
             if (it.toString().isNotEmpty()) {
                 tilName.error = null
@@ -125,7 +121,8 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             if (isValid) {
-                showConfirmDialog()
+                // Memanggil dialog dengan mengirim data email dan password
+                showConfirmDialog(email, pass)
             }
         }
 
@@ -142,14 +139,22 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun showConfirmDialog() {
+
+    private fun showConfirmDialog(emailBaru: String, passBaru: String) {
         AlertDialog.Builder(this)
             .setTitle("Konfirmasi Data")
             .setMessage("Apakah data yang Anda masukkan sudah benar?")
             .setCancelable(false)
             .setPositiveButton("Ya") { _, _ ->
-                showCustomToast("Registrasi Berhasil!")
-                finish()
+                // Simpan ke SharedPreferences agar bisa login di MainActivity
+                val sharedPref = getSharedPreferences("UserAcc", MODE_PRIVATE)
+                val editor = sharedPref.edit()
+                editor.putString("SAVED_EMAIL", emailBaru)
+                editor.putString("SAVED_PASS", passBaru)
+                editor.apply()
+
+                Toast.makeText(this, "Akun Berhasil Dibuat!", Toast.LENGTH_SHORT).show()
+                finish() // Kembali ke halaman Login
             }
             .setNegativeButton("Tidak", null)
             .show()

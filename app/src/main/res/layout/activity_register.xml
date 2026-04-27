@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="24dp"
-                    android:paddingBottom="100dp"> </LinearLayout>
+                    android:paddingBottom="100dp"></LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/btnBack"
@@ -55,7 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Back"
-                        android:textColor="#7070FF"
+                        android:textColor="#FFFFFF"
                         android:textStyle="bold"
                         android:layout_marginStart="5dp"/>
                 </LinearLayout>
@@ -166,7 +166,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:layout_marginTop="20dp"
-                    android:backgroundTint="#7070FF"
+                    android:backgroundTint="#5C6BC0"
                     android:text="DAFTAR SEKARANG"
                     app:cornerRadius="12dp" />
 
